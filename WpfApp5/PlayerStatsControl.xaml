@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="WpfApp5.PlayerStatsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="Auto" Width="Auto">
+    <Border BorderBrush="Black" BorderThickness="1" Padding="5" Background="LightGray">
+        <StackPanel>
+            <TextBlock Text="Статистика гравця" FontWeight="Bold" Margin="0,0,0,5"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Зерно: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding Grain}" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Хміль: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding Hops}" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Вода: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding Water}" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Закваска: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding Starter}" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Дрова: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding FireWood}" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Пиво: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding Beer}" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Хліб: " FontWeight="Bold"/>
+                <TextBlock Text="{Binding Bread}" FontWeight="Bold"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>
