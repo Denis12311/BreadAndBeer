@@ -11,26 +11,54 @@
         <!--Test Stats Panel Button-->
         <Button Height="50" Width="100" Click="Button_Click"></Button>
         <!--Test Cards Button-->
-        <Button Height="50" Width="100" Click="AddCard_Click" VerticalAlignment="Top"/>
+        <Button Height="50" Width="100" Click="AddCard_Click" VerticalAlignment="Top" Margin="336,82,364,0"/>
         <!--Card Inventory  ItemControl-->
         <ItemsControl x:Name="CardHolder" ItemsSource="{Binding CurrentPlayer.Inventory}" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
-                    
+
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Button Width="100" Height="150" Margin="10" Click="CardButton_Click">
-                        <TextBlock Text="{Binding Name}" 
-                   TextWrapping="Wrap" 
-                   TextAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Vertical">
+                            <Image Source="{Binding ImagePath}" Width="100" Height="80" Stretch="Uniform"/>
+                            <TextBlock Text="{Binding Name}" 
+                               TextWrapping="Wrap" 
+                               TextAlignment="Center" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <!--Player-->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <!-- Первый StackPanel -->
+            <StackPanel Margin="0,5,5,5">
+                <TextBlock Text="{Binding CurrentPlayer.Name}" 
+                   Width="150" Height="50"
+                   FontSize="20" FontWeight="Bold" 
+                   HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            </StackPanel>
+            <!-- Второй StackPanel -->
+            <StackPanel Margin="0,5,5,5">
+                <TextBlock Text="{Binding CurrentSeason}" 
+                   Width="150" Height="50"
+                   FontSize="20" FontWeight="Bold"/>
+            </StackPanel>
+            <!-- Третий StackPanel -->
+            <StackPanel Margin="0,5,5,5">
+                <TextBlock Text="Цикл: " 
+                   Width="150" Height="25"
+                   FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Turns}" 
+                   Width="150" Height="50"
+                   FontSize="20" FontWeight="Bold"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
