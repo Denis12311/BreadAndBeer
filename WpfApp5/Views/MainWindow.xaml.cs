@@ -148,49 +148,49 @@ namespace WpfApp5
 
 
 
-        private SeasonType _currentSeason;
-        public SeasonType CurrentSeason
-        {
-            get => _currentSeason;
-            set
+            private SeasonType _currentSeason;
+            public SeasonType CurrentSeason
             {
-                _currentSeason = value;
-                OnPropertyChanged(nameof(CurrentSeason));
+                get => _currentSeason;
+                set
+                {
+                    _currentSeason = value;
+                    OnPropertyChanged(nameof(CurrentSeason));
+                }
             }
-        }
-        public int _turns;
-        public int Turns
-        {
-            get => _turns;
-            set
+            public int _turns;
+            public int Turns
             {
-                _turns = value;
-                OnPropertyChanged(nameof(Turns));
+                get => _turns;
+                set
+                {
+                    _turns = value;
+                    OnPropertyChanged(nameof(Turns));
+                }
             }
-        }
 
-        public int _hod;
-        public int Hod
-        {
-            get => _hod;
-            set
+            public int _hod;
+            public int Hod
             {
-                _hod = value;
-                OnPropertyChanged(nameof(Hod));
+                get => _hod;
+                set
+                {
+                    _hod = value;
+                    OnPropertyChanged(nameof(Hod));
+                }
             }
-        }
 
-        public int _score;
+            public int _score;
 
-        public int Score
-        {
-            get => _score;
-            set
+            public int Score
             {
-                _score = value;
-                OnPropertyChanged(nameof(Score));
+                get => _score;
+                set
+                {
+                    _score = value;
+                    OnPropertyChanged(nameof(Score));
+                }
             }
-        }
 
 
         private static readonly Random rand = new Random();
@@ -1045,3 +1045,9 @@ namespace WpfApp5
         }
     }
 }
+
+
+
+
+
+
