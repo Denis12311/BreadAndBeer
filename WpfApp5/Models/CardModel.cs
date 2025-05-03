@@ -11,7 +11,7 @@ namespace WpfApp5.Models
 
     public interface IUseCard
     {
-         void UseCard(Player player);
+         void UseCard(PlayerModel player);
     }
     public abstract class CardModel: IUseCard, INotifyPropertyChanged
     {
@@ -43,7 +43,7 @@ namespace WpfApp5.Models
             }
         }
 
-        public abstract void UseCard(Player player);
+        public abstract void UseCard(PlayerModel player);
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)

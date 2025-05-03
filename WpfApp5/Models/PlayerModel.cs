@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static WpfApp5.MainWindow;
+using WpfApp5.Models;
+using WpfApp5.Services;
 
 namespace WpfApp5.Models
 {
@@ -103,8 +105,8 @@ namespace WpfApp5.Models
         }
 
 
-        private ObservableCollection<Card> _inventory = new ObservableCollection<Card>();
-        public ObservableCollection<Card> Inventory
+        private ObservableCollection<CardModel> _inventory = new ObservableCollection<CardModel>();
+        public ObservableCollection<CardModel> Inventory
         {
             get { return _inventory; }
             set

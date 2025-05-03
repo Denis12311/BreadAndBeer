@@ -10,11 +10,11 @@ namespace WpfApp5.Services
 {
     public class NavigationService
     {
-        private readonly Frame _mainframe;
+        private readonly Window _mainwindow;
 
-        public NavigationService(Frame mainframe)
+        public NavigationService(Window mainwindow)
         {
-            _mainframe = mainframe;
+            _mainwindow = mainwindow;
         }
 
         public void NavigationToMainMenu()

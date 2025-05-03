@@ -184,13 +184,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Cards\AddDarkBeerCardModel.cs" />
+    <Compile Include="Models\Cards\AddHarvestBreadCardModel.cs" />
+    <Compile Include="Models\Cards\AddHeartyBreadCardModel.cs" />
+    <Compile Include="Models\Cards\AddHolBeerCardModel.cs" />
+    <Compile Include="Models\Cards\AddLagerBeerCardModel.cs" />
+    <Compile Include="Models\Cards\AddNormBeerCardModel.cs" />
+    <Compile Include="Models\Cards\AddNormBreadCardModel.cs" />
     <Compile Include="Models\CardModel.cs" />
+    <Compile Include="Models\Cards\AddSimpleBreadCardModel.cs" />
+    <Compile Include="Models\Cards\ExchangeGrainForWaterCardModel.cs" />
+    <Compile Include="Models\Cards\ExchangeHopsForStarterCardModel.cs" />
+    <Compile Include="Models\Cards\ExchangeStarterForHopsCardModel.cs" />
+    <Compile Include="Models\Cards\ExchangeWaterForGrainCardModel.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Services\CardService.cs" />
     <Compile Include="Services\GameStateService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\PlayerService.cs" />
+    <Compile Include="ViewModels\GameViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\StartMenu.xaml.cs">
       <DependentUpon>StartMenu.xaml</DependentUpon>
     </Compile>
@@ -252,9 +266,7 @@
   <ItemGroup>
     <Resource Include="Images\AddBeer.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.1.1.0\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.1.1.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

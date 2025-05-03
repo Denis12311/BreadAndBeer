@@ -16,12 +16,15 @@ namespace WpfApp5.Services
         private readonly PlayerService _playerService;
         private readonly GameModel _gameModel;
         private readonly NavigationService _navigationService;
+        private readonly CardService _cardService;
 
-        public GameStateService(PlayerService playerService, GameModel gameModel, NavigationService navigationService)
+      
+        public GameStateService(PlayerService playerService, GameModel gameModel, NavigationService navigationService, CardService cardService)
         {
             _playerService = playerService;
             _gameModel = gameModel;
             _navigationService = navigationService;
+            _cardService = cardService;
         }
 
         public void EndTurnCheck()
@@ -60,17 +63,19 @@ namespace WpfApp5.Services
 
             GiveSeasonResources();
 
-            GiveCardAtSeasonStart();
+            _cardService.Shuffle();
+            _cardService.DrawHand(_playerService.Player1, 5);
+            _cardService.DrawHand(_playerService.Player2, 5);
         }
 
 
 
-        public int CalculateScore(Player player)
+        public int CalculateScore(PlayerModel player)
         {
             return Math.Min(player.Bread, player.Beer);
         }
 
-        private void GiveSeasonResources()
+        public void GiveSeasonResources()
         {
             if (_gameModel.CurrentSeason == GameModel.SeasonType.NeZasuha)
             {
@@ -101,6 +106,39 @@ namespace WpfApp5.Services
                 _playerService.Player2.FireWood += 2;
             }
         }
+
+        public void GiveStartResources()
+        {
+            if (_gameModel.CurrentSeason == GameModel.SeasonType.NeZasuha)
+            {
+                _playerService.Player1.Grain += 6;
+                _playerService.Player1.Hops += 4;
+                _playerService.Player1.Water += 5;
+                _playerService.Player1.Starter += 3;
+                _playerService.Player1.FireWood += 4;
+
+                _playerService.Player2.Grain += 6;
+                _playerService.Player2.Hops += 4;
+                _playerService.Player2.Water += 5;
+                _playerService.Player2.Starter += 3;
+                _playerService.Player2.FireWood += 4;
+            }
+            if (_gameModel.CurrentSeason == GameModel.SeasonType.Zasuha)
+            {
+                _playerService.Player1.Grain += 3;
+                _playerService.Player1.Hops += 2;
+                _playerService.Player1.Water += 3;
+                _playerService.Player1.Starter += 2;
+                _playerService.Player1.FireWood += 2;
+
+                _playerService.Player2.Grain += 3;
+                _playerService.Player2.Hops += 2;
+                _playerService.Player2.Water += 3;
+                _playerService.Player2.Starter += 2;
+                _playerService.Player2.FireWood += 2;
+            }
+        }
+
 
 
     }

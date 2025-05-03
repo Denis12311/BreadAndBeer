@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WpfApp5.Models
 {
-    public class GameModel
+    public class GameModel: INotifyPropertyChanged
     {
 
         public int _turns;
@@ -46,11 +46,7 @@ namespace WpfApp5.Models
 
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
 
         private SeasonType _currentSeason;
         public SeasonType CurrentSeason
@@ -69,8 +65,8 @@ namespace WpfApp5.Models
             NeZasuha
         }
 
-        private Player _currentPlayer;
-        public Player CurrentPlayer
+        private PlayerModel _currentPlayer;
+        public PlayerModel CurrentPlayer
         {
             get => _currentPlayer;
             set
@@ -79,5 +75,11 @@ namespace WpfApp5.Models
                 OnPropertyChanged(nameof(CurrentPlayer));
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
     } 
 }

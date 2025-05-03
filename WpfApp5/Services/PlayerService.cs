@@ -15,20 +15,26 @@ namespace WpfApp5.Services
     public class PlayerService
     {
 
-        public Player Player1 = new Player { Grain = 0, Hops = 0, Water = 0, Starter = 0, FireWood = 0, Beer = 0, Bread = 0, Name = "Player 1" };
+        private readonly GameModel _gameModel;
 
-        public Player Player2 = new Player { Grain = 0, Hops = 0, Water = 0, Starter = 0, FireWood = 0, Beer = 0, Bread = 0, Name = "Player 2" };
 
-        public Player CurrentPlayer { get; private set; }
+        public PlayerModel Player1 = new PlayerModel { Grain = 0, Hops = 0, Water = 0, Starter = 0, FireWood = 0, Beer = 0, Bread = 0, Name = "Player 1" };
 
-        public  PlayerService()
+        public PlayerModel Player2 = new PlayerModel { Grain = 0, Hops = 0, Water = 0, Starter = 0, FireWood = 0, Beer = 0, Bread = 0, Name = "Player 2" };
+
+        public PlayerModel CurrentPlayer { get; private set; }
+
+        public  PlayerService(GameModel gameModel)
         {
+            _gameModel = gameModel;
             CurrentPlayer = Player1;
+            _gameModel.CurrentPlayer= CurrentPlayer;
         }
 
         public void SwitchPlayer()
         {
             CurrentPlayer = (CurrentPlayer == Player1) ? Player2 : Player1;
+            _gameModel.CurrentPlayer = CurrentPlayer;
         }
 
         private void SwapPlayerCards()
@@ -38,6 +44,11 @@ namespace WpfApp5.Services
             Player2.Inventory = tempInventory;
         }
 
+        public void UseCard(CardModel card)
+        {
+            card.UseCard(CurrentPlayer);
+            CurrentPlayer.Inventory.Remove(card);
 
+        }
     }
 }

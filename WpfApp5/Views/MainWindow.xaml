@@ -8,56 +8,51 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <local:PlayerStatsControl HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10" DataContext="{Binding CurrentPlayer}" />
-        <!--Test Stats Panel Button-->
-        <Button Height="50" Width="100" Click="Button_Click"></Button>
-        <!--Test Cards Button-->
-        <Button Height="50" Width="100" Click="AddCard_Click" VerticalAlignment="Top" Margin="336,82,364,0"/>
-        <!--Card Inventory  ItemControl-->
-        <ItemsControl x:Name="CardHolder" ItemsSource="{Binding CurrentPlayer.Inventory}" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+
+        <!-- Карточки внизу по центру -->
+        <ItemsControl ItemsSource="{Binding Hand}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Bottom"
+                      Margin="0,0,0,10">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Width="100" Height="150" Margin="10" Click="CardButton_Click">
-                        <StackPanel Orientation="Vertical">
-                            <Image Source="{Binding ImagePath}" Width="100" Height="80" Stretch="Uniform"/>
-                            <TextBlock Text="{Binding Name}" 
-                               TextWrapping="Wrap" 
-                               TextAlignment="Center" 
-                               VerticalAlignment="Center" 
-                               HorizontalAlignment="Center"/>
+                    <Button Command="{Binding DataContext.UseCardCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"
+                            Margin="10,0">
+                        <StackPanel>
+                            <Image Source="{Binding ImagePath}" Width="100" Height="80" Stretch="Uniform" />
+                            <TextBlock Text="{Binding Name}" TextAlignment="Center" TextWrapping="Wrap" />
                         </StackPanel>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <!--Player-->
+
+        <!--Player Info-->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-            <!-- Первый StackPanel -->
             <StackPanel Margin="0,5,5,5">
-                <TextBlock Text="{Binding CurrentPlayer.Name}" 
-                   Width="150" Height="50"
-                   FontSize="20" FontWeight="Bold" 
-                   HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Text="{Binding CurrentPlayer.Name}"
+                           Width="150" Height="50"
+                           FontSize="20" FontWeight="Bold" 
+                           HorizontalAlignment="Center" VerticalAlignment="Top" />
             </StackPanel>
-            <!-- Второй StackPanel -->
             <StackPanel Margin="0,5,5,5">
-                <TextBlock Text="{Binding CurrentSeason}" 
-                   Width="150" Height="50"
-                   FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="{Binding CurrentSeason}"
+                           Width="150" Height="50"
+                           FontSize="20" FontWeight="Bold" />
             </StackPanel>
-            <!-- Третий StackPanel -->
             <StackPanel Margin="0,5,5,5">
-                <TextBlock Text="Цикл: " 
-                   Width="150" Height="25"
-                   FontSize="20" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Turns}" 
-                   Width="150" Height="50"
-                   FontSize="20" FontWeight="Bold"/>
+                <TextBlock Text="Цикл: "
+                           Width="150" Height="25"
+                           FontSize="20" FontWeight="Bold" />
+                <TextBlock Text="{Binding Turns}"
+                           Width="150" Height="50"
+                           FontSize="20" FontWeight="Bold" />
             </StackPanel>
         </StackPanel>
     </Grid>
