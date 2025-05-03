@@ -16,30 +16,21 @@ namespace WpfApp5.ViewModels
         private readonly DataBaseService _dbService;
 
         public ObservableCollection<CardModel> Hand => _playerService.CurrentPlayer.Inventory;
-
         public PlayerModel CurrentPlayer => _gameModel.CurrentPlayer;
+        public int Turns => _gameModel.Turns;
 
         public ICommand UseCardCommand { get; }
         public ICommand EndTurnCommand { get; }
-
         public ICommand SaveGameCommand { get; }
         public ICommand LoadGameCommand { get; }
         public ICommand ClearDatabaseCommand { get; }
-        public int Turns
-        {
-            get => _gameModel.Turns;
-        }
-
-
-
-
 
         public GameViewModel(
             GameModel gameModel,
             PlayerService playerService,
             CardService cardService,
             GameStateService gameStateService,
-             DataBaseService dbService)
+            DataBaseService dbService)
         {
             _gameModel = gameModel;
             _playerService = playerService;
@@ -47,52 +38,66 @@ namespace WpfApp5.ViewModels
             _gameStateService = gameStateService;
             _dbService = dbService;
 
-
+            // 1. Prepare DB + load
             _dbService.CreateDatabaseIfNotExists();
             _dbService.InitializeDatabase();
-            _dbService.LoadGame();
+            bool loaded = _dbService.LoadGame();
 
-            //Роздача ресурсів
-
-            _gameStateService.GiveStartResources();
-            // Начальная раздача карт
-            _cardService.Shuffle();
-            // Раздаём 5 карт первому игроку
-            var hand1 = _cardService.DrawHand(5);
-            foreach (var card in hand1)
+            // 2. Если не было сохранения — новая игра
+            if (!loaded)
             {
-                _playerService.Player1.Inventory.Add(card);
+                _gameStateService.GiveStartResources();
+                _cardService.Shuffle();
+                DealInitialHands();
+                _dbService.SaveGame();
             }
 
-            // Раздаём 5 карт второму игроку
-            var hand2 = _cardService.DrawHand(5);
-            foreach (var card in hand2)
-            {
-                _playerService.Player2.Inventory.Add(card);
-            }
-
-            _gameModel.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(GameModel.Turns))
-                    OnPropertyChanged(nameof(Turns));
-            };
-
-
-
-            // Подписка на смену игрока для обновления UI
+            // 3. Подписки
             _gameModel.PropertyChanged += OnGameModelPropertyChanged;
 
-            UseCardCommand = new RelayCommand(ExecuteUseCard, param => param is CardModel);
+            // 4. Команды
+            UseCardCommand = new RelayCommand(ExecuteUseCard, _ => true);
             EndTurnCommand = new RelayCommand(_ =>
             {
                 _gameStateService.ChangeSeasons();
-                _dbService.SaveGame();        // автосохранение после смены сезона
+                _dbService.SaveGame();
                 RaiseAllProperties();
             });
-            SaveGameCommand = new RelayCommand(_ => _dbService.SaveGame());
-            LoadGameCommand = new RelayCommand(_ => { _dbService.LoadGame(); RaiseAllProperties(); });
-            ClearDatabaseCommand = new RelayCommand(_ => _dbService.ClearDatabase());
 
+            SaveGameCommand = new RelayCommand(_ => _dbService.SaveGame());
+            LoadGameCommand = new RelayCommand(_ =>
+            {
+                _dbService.LoadGame();
+                RaiseAllProperties();
+            });
+            ClearDatabaseCommand = new RelayCommand(_ => _dbService.ClearDatabase());
+        }
+
+        private void DealInitialHands()
+        {
+            _playerService.Player1.Inventory.Clear();
+            foreach (var c in _cardService.DrawHand(5))
+                _playerService.Player1.Inventory.Add(c);
+
+            _playerService.Player2.Inventory.Clear();
+            foreach (var c in _cardService.DrawHand(5))
+                _playerService.Player2.Inventory.Add(c);
+
+            RaiseAllProperties();
+        }
+
+        private void ExecuteUseCard(object param)
+        {
+            if (param is CardModel card)
+            {
+                _playerService.UseCard(card);
+                _playerService.SwitchPlayer();
+                _gameModel.Hod++;
+                _gameStateService.EndTurnCheck();
+                _playerService.CheckAndSwapCards();
+                _dbService.SaveGame();
+                RaiseAllProperties();
+            }
         }
 
         private void OnGameModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -102,6 +107,10 @@ namespace WpfApp5.ViewModels
                 OnPropertyChanged(nameof(CurrentPlayer));
                 OnPropertyChanged(nameof(Hand));
             }
+            else if (e.PropertyName == nameof(GameModel.Turns))
+            {
+                OnPropertyChanged(nameof(Turns));
+            }
         }
 
         private void RaiseAllProperties()
@@ -109,29 +118,10 @@ namespace WpfApp5.ViewModels
             OnPropertyChanged(nameof(CurrentPlayer));
             OnPropertyChanged(nameof(Hand));
             OnPropertyChanged(nameof(Turns));
-            // если нужно — ещё какие-нибудь
-        }
-
-        private void ExecuteUseCard(object parameter)
-        {
-            if (parameter is CardModel card)
-            {
-                _playerService.UseCard(card);
-                _playerService.SwitchPlayer();
-                _gameModel.Hod++;
-                _gameStateService.EndTurnCheck();
-                _playerService.CheckAndSwapCards();
-                OnPropertyChanged(nameof(Hand));
-                OnPropertyChanged(nameof(CurrentPlayer));
-                 _dbService.SaveGame();      // автосохранение после каждого хода
-                RaiseAllProperties();
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected void OnPropertyChanged(string name) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
