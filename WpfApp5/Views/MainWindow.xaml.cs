@@ -36,6 +36,7 @@ namespace WpfApp5
             var gameModel = new GameModel();
             var playerService = new PlayerService(gameModel); // Предполагается, что он создаёт и Player1, и Player2, и устанавливает CurrentPlayer
             var cardService = new CardService();
+            var dbService = new DataBaseService(playerService, gameModel);
 
             gameModel.CurrentPlayer = playerService.Player1;
 
@@ -46,7 +47,7 @@ namespace WpfApp5
           
 
             // Создание ViewModel и установка DataContext
-            DataContext = new GameViewModel(gameModel, playerService, cardService, gameStateService);
+            DataContext = new GameViewModel(gameModel, playerService, cardService, gameStateService,dbService);
         }
     }
 }

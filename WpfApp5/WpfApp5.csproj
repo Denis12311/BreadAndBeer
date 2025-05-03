@@ -200,6 +200,7 @@
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Services\CardService.cs" />
+    <Compile Include="Services\DataBaseService.cs" />
     <Compile Include="Services\GameStateService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\PlayerService.cs" />

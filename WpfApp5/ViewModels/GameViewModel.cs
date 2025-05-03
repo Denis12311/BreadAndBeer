@@ -13,6 +13,7 @@ namespace WpfApp5.ViewModels
         private readonly PlayerService _playerService;
         private readonly CardService _cardService;
         private readonly GameStateService _gameStateService;
+        private readonly DataBaseService _dbService;
 
         public ObservableCollection<CardModel> Hand => _playerService.CurrentPlayer.Inventory;
 
@@ -21,6 +22,9 @@ namespace WpfApp5.ViewModels
         public ICommand UseCardCommand { get; }
         public ICommand EndTurnCommand { get; }
 
+        public ICommand SaveGameCommand { get; }
+        public ICommand LoadGameCommand { get; }
+        public ICommand ClearDatabaseCommand { get; }
         public int Turns
         {
             get => _gameModel.Turns;
@@ -34,14 +38,19 @@ namespace WpfApp5.ViewModels
             GameModel gameModel,
             PlayerService playerService,
             CardService cardService,
-            GameStateService gameStateService)
+            GameStateService gameStateService,
+             DataBaseService dbService)
         {
             _gameModel = gameModel;
             _playerService = playerService;
             _cardService = cardService;
             _gameStateService = gameStateService;
+            _dbService = dbService;
 
 
+            _dbService.CreateDatabaseIfNotExists();
+            _dbService.InitializeDatabase();
+            _dbService.LoadGame();
 
             //Роздача ресурсів
 
@@ -73,13 +82,17 @@ namespace WpfApp5.ViewModels
             // Подписка на смену игрока для обновления UI
             _gameModel.PropertyChanged += OnGameModelPropertyChanged;
 
-            UseCardCommand = new RelayCommand(
-                ExecuteUseCard,
-                param => param is CardModel);
+            UseCardCommand = new RelayCommand(ExecuteUseCard, param => param is CardModel);
+            EndTurnCommand = new RelayCommand(_ =>
+            {
+                _gameStateService.ChangeSeasons();
+                _dbService.SaveGame();        // автосохранение после смены сезона
+                RaiseAllProperties();
+            });
+            SaveGameCommand = new RelayCommand(_ => _dbService.SaveGame());
+            LoadGameCommand = new RelayCommand(_ => { _dbService.LoadGame(); RaiseAllProperties(); });
+            ClearDatabaseCommand = new RelayCommand(_ => _dbService.ClearDatabase());
 
-            EndTurnCommand = new RelayCommand(
-                _ => _gameStateService.ChangeSeasons(),
-                _ => true);
         }
 
         private void OnGameModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -91,6 +104,14 @@ namespace WpfApp5.ViewModels
             }
         }
 
+        private void RaiseAllProperties()
+        {
+            OnPropertyChanged(nameof(CurrentPlayer));
+            OnPropertyChanged(nameof(Hand));
+            OnPropertyChanged(nameof(Turns));
+            // если нужно — ещё какие-нибудь
+        }
+
         private void ExecuteUseCard(object parameter)
         {
             if (parameter is CardModel card)
@@ -99,7 +120,11 @@ namespace WpfApp5.ViewModels
                 _playerService.SwitchPlayer();
                 _gameModel.Hod++;
                 _gameStateService.EndTurnCheck();
+                _playerService.CheckAndSwapCards();
                 OnPropertyChanged(nameof(Hand));
+                OnPropertyChanged(nameof(CurrentPlayer));
+                 _dbService.SaveGame();      // автосохранение после каждого хода
+                RaiseAllProperties();
             }
         }
 

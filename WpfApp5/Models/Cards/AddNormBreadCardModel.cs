@@ -12,7 +12,7 @@ namespace WpfApp5.Models.Cards
     {
         public AddNormBreadCardModel()
         {
-            Name = "Зробити простий хліб";
+            Name = "Зробити звичайний хліб";
             ImagePath = "Images/AddSimpleBread.png";
         }
 

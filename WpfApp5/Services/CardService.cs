@@ -68,7 +68,7 @@ namespace WpfApp5.Services
                 }
                 else
                 {
-                    break; // Запас карт в колоді вичерпано
+                    break;
                 }
             }
 
@@ -79,7 +79,7 @@ namespace WpfApp5.Services
             if (player.Inventory == null)
                 player.Inventory = new ObservableCollection<CardModel>();
             else
-                player.Inventory.Clear(); // Очистити стару руку
+                player.Inventory.Clear();
 
             int drawn = 0;
 
@@ -93,7 +93,7 @@ namespace WpfApp5.Services
                 }
                 else
                 {
-                    break; // Якщо карт більше немає
+                    break;
                 }
             }
         }

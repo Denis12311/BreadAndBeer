@@ -37,7 +37,7 @@ namespace WpfApp5.Services
             _gameModel.CurrentPlayer = CurrentPlayer;
         }
 
-        private void SwapPlayerCards()
+        public void SwapPlayerCards()
         {
             var tempInventory = Player1.Inventory;
             Player1.Inventory = Player2.Inventory;
@@ -50,5 +50,15 @@ namespace WpfApp5.Services
             CurrentPlayer.Inventory.Remove(card);
 
         }
+        
+        public void CheckAndSwapCards()
+        {
+            if (_gameModel.Hod % 2 == 0)
+            {
+                SwapPlayerCards();
+                MessageBox.Show("Обмін картами між гравцями");
+            }
+        }
+
     }
 }
