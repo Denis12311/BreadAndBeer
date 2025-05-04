@@ -85,7 +85,7 @@ namespace WpfApp5.ViewModels
 
             RaiseAllProperties();
         }
-
+        
         private void ExecuteUseCard(object param)
         {
             if (param is CardModel card)
